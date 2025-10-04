@@ -42,3 +42,52 @@ square.addEventListener("click", () => {
 		isClicked = false
 	}
 })
+
+/* Задание № 4 */
+
+const calculator = {
+	sum(a, b) {
+		return console.log(`Сумма ваших чисел ${a} и ${b}: `, a + b)
+	},
+	sub(a, b) {
+		return console.log(`Разность ваших чисел ${a} и ${b}: `, a - b)
+	},
+	mul(a, b) {
+		return console.log(`Произведение ваших чисел ${a} и ${b}: `, a * b)
+	},
+	div(a, b) {
+		return console.log(`Деление ваших чисел ${a} и ${b}: `, a / b)
+	},
+	exponent(a, b) {
+		return console.log(`Возведение вашего числа ${a} в степень ${b}: `, a ** b)
+	},
+	percent(a, b) {
+		return console.log(`Процент от ваших чисел ${a} и ${b}: `, (a * b) / 100)
+	},
+}
+
+calculator.sum(1, 2)
+calculator.sub(2, 2)
+calculator.mul(3, 2)
+calculator.div(10, 2)
+calculator.exponent(10, 2)
+calculator.percent(100, 50)
+
+/* Задание № 5 */
+
+const input = document.createElement("input")
+const button = document.createElement("button")
+
+button.textContent = "Сохранить"
+
+document.body.appendChild(input)
+document.body.appendChild(button)
+
+button.addEventListener("click", () => {
+	localStorage.setItem("Text", input.value)
+	input.value = ""
+	setTimeout(() => {
+		console.log(localStorage.getItem("Text"))
+		localStorage.removeItem("Text")
+	}, 2000)
+})
