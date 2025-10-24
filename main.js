@@ -56,6 +56,7 @@ const calculator = {
 		return console.log(`Произведение ваших чисел ${a} и ${b}: `, a * b)
 	},
 	div(a, b) {
+		if (b === 0) return console.error("Ошибка: деление на ноль.")
 		return console.log(`Деление ваших чисел ${a} и ${b}: `, a / b)
 	},
 	exponent(a, b) {
