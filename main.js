@@ -88,6 +88,5 @@ button.addEventListener("click", () => {
 	input.value = ""
 	setTimeout(() => {
 		console.log(localStorage.getItem("Text"))
-		localStorage.removeItem("Text")
 	}, 2000)
 })
