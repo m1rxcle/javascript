@@ -47,8 +47,8 @@ class UpgradedOven extends Oven {
 		console.log("Печь выключена...\nСнижение температуры печи...")
 		const turnOffTimer = setInterval(() => {
 			if (this.overHeat > 0) {
-				this._logTemp()
 				this.overHeat--
+				this._logTemp()
 			} else {
 				console.log("Печь полностью остыла...\nПрекращение работы...")
 				clearInterval(turnOffTimer)
