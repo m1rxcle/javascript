@@ -65,5 +65,7 @@ const upgradedOven = new UpgradedOven(15)
 console.log(upgradedOven.maxTemp)
 upgradedOven.turnOn()
 
+/* Задание 3 */
+
 import { checkString } from "./checkString.js"
 console.log(checkString("Привет Javascript!"))
