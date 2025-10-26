@@ -1,93 +1,96 @@
-/* Задание № 1 */
+const createInput = document.getElementById("create-input")
+const createBtn = document.getElementById("create-btn")
+const noteList = document.getElementById("note-list")
+const notesLabel = document.getElementById("notes-label")
+const emptyDiv = document.createElement("div")
 
-const title = document.createElement("h1")
-title.textContent = "Hello World !"
-document.body.appendChild(title)
+const notes = []
 
-/* Задание № 2 */
-
-const orderList = document.createElement("ol")
-document.body.appendChild(orderList)
-
-const employees = [
-	{ firstName: "Иван", lastName: "Иванов" },
-	{ firstName: "Максим", lastName: "Максимов" },
-	{ firstName: "Петр", lastName: "Петров" },
-	{ firstName: "Алексей", lastName: "Алексеев" },
-	{ firstName: "Дмитрий", lastName: "Дмитриев" },
-]
-
-for (const employee of employees) {
-	const listItem = document.createElement("li")
-	listItem.textContent = `${employee.firstName} ${employee.lastName}`
-	orderList.appendChild(listItem)
-}
-
-/* Задание № 3 */
-
-const square = document.createElement("div")
-square.style.width = "50px"
-square.style.height = "50px"
-square.style.backgroundColor = "red"
-square.className = "square"
-document.body.appendChild(square)
-
-let isClicked = false
-square.addEventListener("click", () => {
-	if (!isClicked) {
-		square.style.borderRadius = "100%"
-		isClicked = true
-	} else {
-		square.style.borderRadius = 0
-		isClicked = false
+createBtn.onclick = function () {
+	if (createInput.value.length === 0) {
+		return
 	}
-})
-
-/* Задание № 4 */
-
-const calculator = {
-	sum(a, b) {
-		return console.log(`Сумма ваших чисел ${a} и ${b}: `, a + b)
-	},
-	sub(a, b) {
-		return console.log(`Разность ваших чисел ${a} и ${b}: `, a - b)
-	},
-	mul(a, b) {
-		return console.log(`Произведение ваших чисел ${a} и ${b}: `, a * b)
-	},
-	div(a, b) {
-		return console.log(`Деление ваших чисел ${a} и ${b}: `, a / b)
-	},
-	exponent(a, b) {
-		return console.log(`Возведение вашего числа ${a} в степень ${b}: `, a ** b)
-	},
-	percent(a, b) {
-		return console.log(`Процент от ваших чисел ${a} и ${b}: `, (a * b) / 100)
-	},
+	notes.push(createInput.value)
+	renderNote()
+	createInput.value = ""
 }
 
-calculator.sum(1, 2)
-calculator.sub(2, 2)
-calculator.mul(3, 2)
-calculator.div(10, 2)
-calculator.exponent(10, 2)
-calculator.percent(100, 50)
+function renderNote() {
+	noteList.innerHTML = ""
+	notes.map((note, index) => {
+		if (localStorage.getItem(`${index}`) === null) {
+			localStorage.setItem(`${index}`, note)
+		}
+		return noteList.insertAdjacentHTML(
+			"afterbegin",
+			`
+			 <li  id="note" class="notes-list__item">
+				<span id="note-name">${note}</span>
+				<div class="item__actions">
+					<div data-index="${index}" data-type="delete" id="delete-note" class="delete_action">
+						<img data-index="${index}" data-type="delete" src="/icons/trash.svg" />
+					</div>
+					<div id="change-note" data-index="${index}" data-type="change" class="change_action">
+						<img data-index="${index}" data-type="change" src="/icons/pen-line.svg" />
+					</div>
+				</div>
+			</li>
+			
+			`
+		)
+	})
 
-/* Задание № 5 */
+	if (notes.length > 0) {
+		notesLabel.textContent = `Ваш список заметок (${notes.length})`
+	} else {
+		notesLabel.textContent = `Ваш список заметок пуст`
+		emptyDiv.classList.add("empty-block")
+		emptyDiv.innerHTML = `
+			<h3 class="empty-block_title">У вас пока что нет ни одной заметки</h3>
+			<p class="empty-block_subtitle">Вы можете добавить заметку введя ее название и нажав на кнопку "Добавить"</p>
+		`
+		noteList.appendChild(emptyDiv)
+	}
+}
 
-const input = document.createElement("input")
-const button = document.createElement("button")
+noteList.onclick = function (e) {
+	if (e.target.dataset.index) {
+		const index = parseInt(e.target.dataset.index)
+		const type = e.target.dataset.type
 
-button.textContent = "Сохранить"
+		if (type === "delete") {
+			const noteItems = document.querySelectorAll(".notes-list__item")
+			const noteItem = noteItems[noteItems.length - 1 - index]
+			noteItem.classList.add("fade-out")
 
-document.body.appendChild(input)
-document.body.appendChild(button)
+			noteItem.addEventListener(
+				"animationend",
+				() => {
+					notes.splice(index, 1)
+					localStorage.clear()
+					renderNote()
+				},
+				{ once: true }
+			)
+		} else if (type === "change") {
+			const changeNoteInput = prompt(`Введите новое название для заметки: "${notes[index]}"`)
+			if (changeNoteInput !== null && changeNoteInput !== "") {
+				notes[index] = changeNoteInput
+				localStorage.setItem(`${index}`, changeNoteInput)
+				renderNote()
+			}
+		}
+	}
+}
 
-button.addEventListener("click", () => {
-	localStorage.setItem("Text", input.value)
-	input.value = ""
-	setTimeout(() => {
-		console.log(localStorage.getItem("Text"))
-		localStorage.removeItem("Text")
-	}, 2000)
-})
+function getNotesFromStorage() {
+	notes.length = 0
+	const keys = Object.keys(localStorage).sort((a, b) => Number(a) - Number(b))
+	for (const key of keys) {
+		const value = localStorage.getItem(key)
+		notes.push(value)
+	}
+	renderNote()
+}
+
+getNotesFromStorage()

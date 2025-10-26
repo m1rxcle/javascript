@@ -3,9 +3,29 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<script src="main.js" defer></script>
 		<link rel="stylesheet" href="style.css" />
-		<title>Первая практика</title>
+		<script src="main.js" defer></script>
+		<title>Третья практика</title>
 	</head>
-	<body></body>
+	<body>
+		<section class="container">
+			<h1 class="main-title">Ваши заметки</h1>
+			<div class="create-notes">
+				<h2 class="create-notes_label">Введите название заметки</h2>
+				<div class="create-notes_block">
+					<input id="create-input" class="create-notes_block__input" type="text" name="note" placeholder="Пойти в магазин..." />
+					<button id="create-btn" class="create-notes_block__btn">Добавить</button>
+				</div>
+			</div>
+			<div class="notes-block">
+				<h3 id="notes-label" class="notes-block_label">Ваш список заметок пуст</h3>
+				<ul id="note-list" class="notes-list">
+					<div class="empty-block">
+						<h3 class="empty-block_title">У вас пока что нет ни одной заметки</h3>
+						<p class="empty-block_subtitle">Вы можете добавить заметку введя ее название и нажав на кнопку "Добавить"</p>
+					</div>
+				</ul>
+			</div>
+		</section>
+	</body>
 </html>
